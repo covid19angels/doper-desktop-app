@@ -10,13 +10,13 @@ Window {
     width: 0
     minimumHeight: 0
     maximumHeight: 0
-        opacity: 0
-        MouseArea{
-            anchors.fill: parent
-            onClicked: {
-                console.log("aaa")
-            }
+    opacity: 0
+    MouseArea{
+        anchors.fill: parent
+        onClicked: {
+            console.log("aaa")
         }
+    }
 
     MainItem {
         id:mainWindow
@@ -27,6 +27,11 @@ Window {
         id:miniorWindow
         visible: true
     }
+
+    LoginItem{
+        visible: true
+    }
+
     TestItem{
         visible: false
     }

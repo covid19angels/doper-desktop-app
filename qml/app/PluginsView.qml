@@ -18,6 +18,7 @@ Rectangle {
                 ListElement {
                     name: "运营架构"
                     iamgeUrl: "qrc:/images/operating-structure.png"
+                    webUrl:"https://www.google.com/"
                 },
                 ListElement {
                     name: "政府架构"
@@ -130,6 +131,8 @@ Rectangle {
                         }
                     }
                 }
+
+
             }
             frame: Rectangle { color: "#F8F8FA" }
         }
@@ -142,9 +145,9 @@ Rectangle {
                     id: pluginsViewTopImage
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.top
-                    anchors.topMargin: 3
+                    anchors.topMargin: 10
                     sourceSize: Qt.size(822,164)
-                    source: "qrc:/images/plugin-top.png"
+                    source: "qrc:/images/banner.png"
                 }
 
                 Rectangle {
@@ -211,7 +214,9 @@ Rectangle {
                                             font.pixelSize: 14
                                         }
                                         onClicked: {
-                                            console.log(name,iamgeUrl)
+                                            var pluginComponent = Qt.createComponent("qrc:/qml/app/WebContainer.qml");
+                                            pluginTabView.addTab(name,pluginComponent)
+                                            pluginTabView.currentIndex = pluginTabView.count - 1
                                         }
                                     }
                                 }

@@ -1,11 +1,11 @@
 ﻿import QtQuick 2.0
 
 MouseArea {
-    property alias sourceSize: icon.sourceSize
-    property alias source: icon.source
-    property bool checked:true
+    property alias icon: _icon
+    property bool activated:false
     Image {
-        id:icon
+        id:_icon
+        sourceSize: Qt.size(parent.width,parent.height)
         anchors.centerIn: parent
     }
 }

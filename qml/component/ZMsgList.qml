@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 
 Rectangle{
     width: parent.width
@@ -131,7 +131,7 @@ Rectangle{
 
         }
         ZButton{
-            text: "发送(s)"
+            label.text: "发送(s)"
             anchors.right: parent.right
             anchors.bottom: parent.bottom
         }

@@ -1,43 +1,50 @@
-﻿import QtQuick 2.0
+﻿import QtQuick 2.13
 
 MouseArea {
     id: mouseArea
-    property string znMode: "vertical"
-    property alias source :icon.source
-    property alias text:name.text
-    property alias textColor : name.color
-    property bool checked: false
+    //设置按钮和标签是水平还是垂直排布
+    property string mode: "vertical"
+    property alias  icon :_icon
+    property alias  label:_label
+    property bool   activated: false
     property string checkedColor: "#1d39c4"
     property string noCheckedColor: "#2f54eb"
-    property alias iconOpacity: icon.opacity
+
     width: parent.width
     height:48
 
 
-
+    //背景和左边竖线
     Rectangle{
         Rectangle {
-            visible: checked
+            visible: activated
             height: parent.height
             width: 2
             color: "#ff9900"
         }
         anchors.fill: parent
-        color: checked == true?checkedColor:noCheckedColor
+        color: activated == true?checkedColor:noCheckedColor
     }
-
-    Image {
-        id:icon
-        visible: source
-        sourceSize.height: 20
-        sourceSize.width: 20
+    //图标和文本，使用column布局，始终在水平方向居中
+    Grid{
+        spacing: 10
+        //控制水平布局还是垂直布局
+        columns: mode == "vertical"?1:0
+        rows: mode == "horizontal"?1:0
+        //控制按钮在按钮范围内水平垂直居中
+        horizontalItemAlignment: Grid.AlignHCenter;
+        verticalItemAlignment: Grid.AlignVCenter
         anchors.centerIn: parent
-    }
-    Text {
-        visible: text!=""
-        id: name
-        anchors.topMargin: 5
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: icon.bottom
+        Image {
+            id:_icon
+            visible: source
+            sourceSize.height: 20
+            sourceSize.width: 20
+        }
+        Text {
+            visible: text!=""
+            id: _label
+            horizontalAlignment: Grid.AlignHCenter
+        }
     }
 }

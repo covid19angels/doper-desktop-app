@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 
 Row {
     property int  viewCount :3
@@ -13,12 +13,13 @@ Row {
     }
 
     ZButton{
-        checked: index == 1
+        activated: index == 1
         width: parent.width/viewCount
         height: parent.height
-        znSize: "custom"
-        text: "通知（6）"
-        color: "#FFFFFF"
+        label.font.bold: true
+        label.text: "通知（6）"
+        label.color: activated ?"#3D53C7":"#585B63"
+        rect.color: "#FFFFFF"
         onClicked: {
 
             if(index != 1){
@@ -26,33 +27,62 @@ Row {
             }
             console.log(index)
         }
+        Rectangle {
+            anchors.bottom: parent.bottom
+            visible: parent.activated
+
+            width:  71
+            height: 2
+            color: "#3855C9"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
     ZButton{
-        checked: index == 2
+        activated: index == 2
         width: parent.width/viewCount
         height: parent.height
-        znSize: "custom"
-        text: "消息（3）"
-        color: "#FFFFFF"
+        label.text: "消息（3）"
+        label.color: activated ?"#3D53C7":"#585B63"
+        label.font.bold: true
+        rect.color: "#FFFFFF"
         onClicked: {
             if(index != 2){
                 index =2
             }
             console.log(index)
         }
+        Rectangle {
+            anchors.bottom: parent.bottom
+            visible: parent.activated
+
+            width:  71
+            height: 2
+            color: "#3855C9"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
     }
     ZButton{
-        checked: index == 3
+        activated: index == 3
         width: parent.width/viewCount
         height: parent.height
-        znSize: "custom"
-        text: "代办（7）"
-        color: "#FFFFFF"
+        label.text: "代办（7）"
+        label.color: activated ?"#3D53C7":"#585B63"
+        label.font.bold: true
+        rect.color: "#FFFFFF"
         onClicked: {
             if(index != 3){
                 index =3
             }
             console.log(index)
+        }
+        Rectangle {
+            anchors.bottom: parent.bottom
+            visible: parent.activated
+
+            width:  71
+            height: 2
+            color: "#3855C9"
+            anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 }

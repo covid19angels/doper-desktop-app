@@ -1,13 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/header.jpg</file>
-        <file>images/msg.svg</file>
-        <file>images/plugin.svg</file>
         <file>qml/app/MsgView.qml</file>
         <file>qml/app/PluginsView.qml</file>
         <file>qml/app/MainItem.qml</file>
-        <file>images/close.svg</file>
-        <file>images/min.svg</file>
         <file>qml/TestItem.qml</file>
         <file>qml/app/SystemTrayManager.qml</file>
         <file>qml/deeplink/ChatView.qml</file>
@@ -23,7 +18,6 @@
         <file>qml/component/ZRoomList.qml</file>
         <file>qml/component/ZVerticalMenu.qml</file>
         <file>qml/main.qml</file>
-        <file>images/setting.svg</file>
         <file>qml/component/ZHeader.qml</file>
         <file>qml/component/ZHorizontalMenu.qml</file>
         <file>qml/component/ZList.qml</file>
@@ -36,11 +30,7 @@
         <file>images/namecard-fill.png</file>
         <file>images/salescenter-fill.png</file>
         <file>images/service.png</file>
-        <file>images/max.png</file>
-        <file>images/bottom.png</file>
-        <file>images/right.png</file>
         <file>qml/component/ZSimpleButton.qml</file>
-        <file>images/plugin-top.png</file>
         <file>images/add-user.png</file>
         <file>images/advertising-board.png</file>
         <file>images/community-check.png</file>
@@ -51,5 +41,22 @@
         <file>images/staff-management.png</file>
         <file>images/user-view.png</file>
         <file>qml/component/ZInputField.qml</file>
+        <file>qml/app/MiniorMsgList.qml</file>
+        <file>qml/app/LoginItem.qml</file>
+        <file>images/denglu.png</file>
+        <file>images/denglubj.png</file>
+        <file>images/mima.png</file>
+        <file>images/shuruilogo.png</file>
+        <file>qml/component/ZTextInput.qml</file>
+        <file>images/banner.png</file>
+        <file>images/close.png</file>
+        <file>images/fangda.png</file>
+        <file>images/logo1.png</file>
+        <file>images/logo-13.png</file>
+        <file>images/suoxiao.png</file>
+        <file>images/xiala.png</file>
+        <file>images/main-logo.png</file>
+        <file>qml/app/WebContainer.qml</file>
+        <file>qml/index.html</file>
     </qresource>
 </RCC>

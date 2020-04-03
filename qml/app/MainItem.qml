@@ -39,8 +39,103 @@ Window {
             width: parent.width - testMenu.width
             height: 50
             anchors.left: testMenu.right
-            maxButtonVisible: true
-//            source: mainItemHeaderConponent
+            Rectangle{
+                anchors.fill: parent
+
+                Image {
+                    id:mainItemIco
+                    anchors.left: parent.left
+                    anchors.leftMargin: 20
+                    anchors.verticalCenter:parent.verticalCenter
+                    source: "qrc:/images/main-logo.png"
+                    sourceSize: Qt.size(207,29)
+                }
+
+                Rectangle{
+                    id:userInfoRect
+                    anchors.right: parent.right
+                    anchors.rightMargin: 206
+                    anchors.verticalCenter:parent.verticalCenter
+                    ZAvatar{
+                        id: userAvatar
+                        width: 24
+                        height: 24
+                        anchors.verticalCenter:parent.verticalCenter
+                        source: "qrc:/images/logo.png"
+                    }
+                    Text {
+                        id: userName
+                        anchors.left: userAvatar.right
+                        anchors.leftMargin: 6
+                        anchors.verticalCenter:parent.verticalCenter
+                        text: "小张总"
+                        font.bold: true
+                        font.pixelSize: 14
+                    }
+                    ZSimpleButton{
+                        width: 10
+                        height: 10
+                        anchors.left: userName.right
+                        anchors.leftMargin: 10
+                        anchors.verticalCenter:parent.verticalCenter
+                        icon.source: "qrc:/images/xiala.png"
+                        onClicked: {
+                            console.log(activated)
+                            activated = !activated
+                        }
+
+                    }
+
+                }
+
+                Row{
+                    anchors.right: parent.right
+                    anchors.verticalCenter:parent.verticalCenter
+                    ZIconButton{
+                        width: 30
+                        height: 30
+                        icon.source: "qrc:/images/suoxiao.png"
+                        onClicked: {
+                            console.log("min")
+                            mainHeaderRect.window.visible = false
+                        }
+                        checkedColor: "#FFFFFF"
+                        noCheckedColor: "#FFFFFF"
+                    }
+                    ZIconButton{
+                        id:maxButton
+                        width: 30
+                        height: 30
+                        icon.source: "qrc:/images/fangda.png"
+
+                        onClicked: {
+                            console.log("max")
+                            console.log(mainHeaderRect.window.visibility)
+                            if(mainHeaderRect.window.visibility == 4){
+                                showNormal()
+                            }else{
+                                showMaximized()
+                            }
+                        }
+                        checkedColor: "#FFFFFF"
+                        noCheckedColor: "#FFFFFF"
+                    }
+                    ZIconButton{
+                        id:closeButton
+                        width: 30
+                        height: 30
+                        icon.source: "qrc:/images/close.png"
+
+                        onClicked: {
+                            console.log("close")
+                            mainHeaderRect.window.visible = false
+                        }
+                        checkedColor: "#FFFFFF"
+                        noCheckedColor: "#FFFFFF"
+
+                    }
+                }
+            }
         }
 
         Loader{

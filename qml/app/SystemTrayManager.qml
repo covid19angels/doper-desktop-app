@@ -1,4 +1,4 @@
-import QtQuick 2.12
+﻿import QtQuick 2.12
 import Qt.labs.platform 1.1
 import Qt3D.Input 2.13
 import QtQuick.Window 2.12
@@ -28,7 +28,7 @@ Rectangle {
     SystemTrayIcon {
         id:systemTrayIcon
         tooltip: "doper-app"
-        icon.source: "qrc:/images/header.jpg"
+        icon.source: "qrc:/images/logo1.png"
         property bool showMode : true
         onGeometryChanged: {
             systemTrayItem.x=systemTrayIcon.geometry.x
@@ -56,13 +56,13 @@ Rectangle {
         }
         Component.onCompleted: systemTrayIcon.show()
         function showReal(){
-            icon.source = "qrc:/images/header.jpg"
+            icon.source = "qrc:/images/logo1.png"
             if(showMode !== true){
                 showMode = true
             }
         }
         function showlucency() {
-            icon.source = "qrc:/images/min.svg"
+            icon.source = "qrc:/images/logo1.png"
             if(showMode !== false){
                 showMode = false
             }

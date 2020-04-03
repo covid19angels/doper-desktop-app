@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Js App</title>
+</head>
+<body
+>
+<!--<script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js">-->
+<!--    console.log("qrc:///qtwebchannel/qwebchannel.js")-->
+<!--</script>-->
+<!-- or -->
+<script type="text/javascript" src="qwebchannel.js"></script>
+
+
+<script type="text/javascript">
+    var _bdlbscWebDataComponent
+
+    window.onload = function () {
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            _bdlbscWebDataComponent = channel.objects.bdlbscWebDataComponent;
+            app_access_token = _bdlbscWebDataComponent.app_access_token;
+            document.cookie = "app_access_token=" + app_access_token;
+            // 获取 app_access_token
+            console.log("app_access_token : " + _bdlbscWebDataComponent.app_access_token)
+            // 获取 user_access_token
+            console.log("user_access_token : " + _bdlbscWebDataComponent.user_access_token)
+            // 获取用户id
+            console.log("user_id : " + _bdlbscWebDataComponent.user_id)
+
+            _bdlbscWebDataComponent.data_change.connect(function (message) {
+                // 接收 c++ 发送过来的数据
+                console.log("js receive ： "+message);
+            })
+        });
+    }
+
+    function send_data() {
+        // 发送数据给c++
+        _bdlbscWebDataComponent.on_send_data("{'action':'js send to cpp'}")
+    }
+</script>
+
+<input type="button" value="发送" onclick="send_data()">
+
+</body>
+</html>

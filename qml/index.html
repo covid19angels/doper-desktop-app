@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Js App</title>
+    <script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script type="text/javascript">
+        var _bdlbscWebDataComponent
+     alert("aaa");
+        function init() {
+            alert("aaa");
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                _bdlbscWebDataComponent = channel.objects.bdlbscWebDataComponent;
+                app_access_token = _bdlbscWebDataComponent.app_access_token;
+                document.cookie = "app_access_token=" + app_access_token;
+                // 获取 access_token
+                console.log("access_token : " + _bdlbscWebDataComponent.access_token)
+                // 获取 refresh_token
+                console.log("refresh_token : " + _bdlbscWebDataComponent.refresh_token)
+                // 获取用户id
+                console.log("expiresIn : " + _bdlbscWebDataComponent.expiresIn)
+
+                _bdlbscWebDataComponent.data_change.connect(function (message) {
+                    // 接收 c++ 发送过来的数据
+                    console.log("js receive ： "+message);
+                })
+            });
+        }
+
+        function send_data() {
+            // 发送数据给c++
+            alert("body");
+            _bdlbscWebDataComponent.on_send_data("{'action':'js send to cpp'}")
+        }
+        init();
+    </script>
+</head>
+<body>
+
+
+<input type="button" value="发送" onclick="send_data()">
+
+
+
+</body>
+</html>

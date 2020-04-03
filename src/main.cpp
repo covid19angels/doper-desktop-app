@@ -1,8 +1,5 @@
-﻿
-
-#include <QGuiApplication>
+﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QtWebEngine>
 #include <QSystemTrayIcon>
 #include <QAction>
 #include <QMenu>
@@ -10,6 +7,8 @@
 #include <QDebug>
 #include <QObject>
 #include <QSqlError>
+#include <QtWebEngine/QtWebEngine>
+//#include <QtAutoUpdaterCore/Updater>
 
 #include <string>
 #include <exception>
@@ -18,7 +17,9 @@
 #include "src/easylog/easylogging++.h"
 #include "src/graphql/welcome.hpp"
 #include "src/model/ChatSqlQueryModel.h"
-
+#include "src/graphql/graphqlClient.h"
+#include "src/web/WebDataComponent.h"
+#include "src/storage/Global.h"
 //easylog++
 
 INITIALIZE_EASYLOGGINGPP
@@ -42,7 +43,9 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<SqlConversationModel>("MySqlModel", 1, 0, "SqlConversationModel");
+
+
+
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("F:/doper-app/db/chat.db");
@@ -59,7 +62,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     QtWebEngine::initialize();
     engine.rootContext()->setContextProperty("pluginsManager",AppPluginManager::getInstance());
+    engine.rootContext()->setContextProperty("globalStorage",GlobalStorage::getInstance());
     qmlRegisterType<Plugin>("PluginTool",1,0,"Plugin");
+    qmlRegisterType<SqlConversationModel>("MySqlModel", 1, 0, "SqlConversationModel");
+    qmlRegisterType<WebDataComponent>("WebDataComponent", 1, 0, "WebDataComponent");
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -68,5 +74,7 @@ int main(int argc, char *argv[])
                      }, Qt::QueuedConnection);
 
     engine.load(url);
+    GraphqlClient* graphqlclient = new GraphqlClient();
+    graphqlclient->login();
     return app.exec();
 }

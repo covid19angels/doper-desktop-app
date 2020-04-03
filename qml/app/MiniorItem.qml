@@ -5,6 +5,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.13
 import "../component"
+import "../app"
 
 // 通知面板
 Window {
@@ -32,12 +33,79 @@ Window {
 
 
         ZHeader{
-            window: miniorWindow
             id:miniorHeaderRect
             width: parent.width
             height: 42
-            maxButtonVisible: false
-            userInfoRectVisible:false
+            Rectangle{
+                anchors.fill: parent
+
+                Image {
+                    id:mainItemIco
+                    anchors.left: parent.left
+                    anchors.leftMargin: 9
+                    anchors.verticalCenter:parent.verticalCenter
+                    source: "qrc:/images/logo1.png"
+                    width: 29
+                    height: 29
+                }
+                Text{
+                    text: qsTr("DOPER")
+                    font.bold: true
+                    font.pixelSize: 12
+                    anchors.left: parent.left
+                    anchors.leftMargin: 45
+                    anchors.verticalCenter:parent.verticalCenter
+                }
+
+
+                Row{
+                    anchors.right: parent.right
+                    anchors.verticalCenter:parent.verticalCenter
+                    ZIconButton{
+                        width: 30
+                        height: 30
+                        icon.source: "qrc:/images/suoxiao.png"
+                        onClicked: {
+                            console.log("min")
+                            miniorHeaderRect.window.visible = false
+                        }
+                        checkedColor: "#FFFFFF"
+                        noCheckedColor: "#FFFFFF"
+                    }
+//                    ZIconButton{
+//                        id:maxButton
+//                        width: 30
+//                        height: 30
+//                        icon.source: "qrc:/images/max.png"
+
+//                        onClicked: {
+//                            console.log("max")
+//                            console.log(window.visibility)
+//                            if(window.visibility == 4){
+//                                showNormal()
+//                            }else{
+//                                showMaximized()
+//                            }
+//                        }
+//                        checkedColor: "#FFFFFF"
+//                        noCheckedColor: "#FFFFFF"
+//                    }
+                    ZIconButton{
+                        id:closeButton
+                        width: 30
+                        height: 30
+                        icon.source: "qrc:/images/close.png"
+
+                        onClicked: {
+                            console.log("close")
+                            miniorHeaderRect.window.visible = false
+                        }
+                        checkedColor: "#FFFFFF"
+                        noCheckedColor: "#FFFFFF"
+
+                    }
+                }
+            }
         }
 
         ZHorizontalMenu{
@@ -48,7 +116,7 @@ Window {
             anchors.top: miniorHorizontalMenu.bottom
             width: parent.width
             anchors.bottom: parent.bottom
-            source: "qrc:/qml/component/ZRoomList.qml"
+            source: "qrc:/qml/app/MiniorMsgList.qml"
         }
     }
     DropShadow {
@@ -78,7 +146,7 @@ Window {
             onEntered: {
                 console.log("entered")
                 //itemNotificationHome.height = itemNotificationHome.parent
-                miniorWindow.height = 480
+                miniorWindow.height = 400
             }
             onExited: {
                 console.log("exited")
