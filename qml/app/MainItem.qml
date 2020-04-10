@@ -68,7 +68,7 @@ Window {
                         anchors.left: userAvatar.right
                         anchors.leftMargin: 6
                         anchors.verticalCenter:parent.verticalCenter
-                        text: "小张总"
+                        text: globalStorage.username
                         font.bold: true
                         font.pixelSize: 14
                     }

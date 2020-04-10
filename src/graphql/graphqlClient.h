@@ -12,10 +12,11 @@ class GraphqlClient :public QObject
 public:
     GraphqlClient();
 
-    void login(void);
+    Q_INVOKABLE void login(QString,QString);
+
 
 public  slots:
-    void loginSucess(QNetworkReply*);
+    void loginResponse(QNetworkReply*);
 private:
     QNetworkAccessManager* networkManager;
 };

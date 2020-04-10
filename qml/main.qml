@@ -20,16 +20,16 @@ Window {
 
     MainItem {
         id:mainWindow
-        visible: true
+        visible: globalStorage.loginStatus
     }
 
     MiniorItem{
         id:miniorWindow
-        visible: true
+        visible: globalStorage.loginStatus
     }
 
     LoginItem{
-        visible: true
+        visible: !globalStorage.loginStatus
     }
 
     TestItem{

@@ -16,17 +16,34 @@ Rectangle {
             name:"组织架构"
             attributes:[
                 ListElement {
-                    name: "运营架构"
+                    name: "管理平台"
                     iamgeUrl: "qrc:/images/operating-structure.png"
-                    webUrl:"https://www.google.com/"
+                    webUrl:"http://47.93.9.213/topcenter/#/OperationalArchitecture/detailsOperatorCompany"
+                    platform:"TOPCENTER"
                 },
                 ListElement {
-                    name: "政府架构"
+                    name: "区域平台"
                     iamgeUrl: "qrc:/images/government-structure.png"
+                    webUrl:"http://47.93.9.213/areacenter/#/OperationalArchitecture/detailsCenter"
+                    platform:"AREACENTER"
+                },
+                ListElement {
+                    name: "社区平台"
+                    iamgeUrl: "qrc:/images/staff-management.png"
+                    webUrl:"http://47.93.9.213/station/#/stage/dayOperating"
+                    platform:"STATION"
+                },
+                ListElement {
+                    name: "运营平台"
+                    iamgeUrl: "qrc:/images/staff-management.png"
+                    webUrl:"http://47.93.9.213/opcenter/#/controlCenter/ShowMapBacklog"
+                    platform:"OPCENTER"
                 },
                 ListElement {
                     name: "员工管理"
                     iamgeUrl: "qrc:/images/staff-management.png"
+                    webUrl:"http://47.93.9.213/opcenter/#/controlCenter/ShowMapBacklog"
+                    platform:"OPCENTER"
                 }
             ]
         }
@@ -182,7 +199,7 @@ Rectangle {
                         model: pluginsDataModel
                         Rectangle{
                             width: parent.width
-                            height: 100
+                            height: 60+kindContent.height
                             Text {
                                 id:kindName
                                 text: name
@@ -192,9 +209,14 @@ Rectangle {
                             Grid{
                                 id:kindContent
                                 columns: 4
-                                spacing: 86
+                                columnSpacing: 86
+                                rowSpacing: 20
                                 anchors.top: kindName.bottom
                                 anchors.topMargin: 20
+                                Component.onCompleted: {
+                                    console.log("aaa:"+kindContent.rows)
+                                }
+
                                 Repeater {
                                     model: attributes
                                     MouseArea {
@@ -214,9 +236,22 @@ Rectangle {
                                             font.pixelSize: 14
                                         }
                                         onClicked: {
-                                            var pluginComponent = Qt.createComponent("qrc:/qml/app/WebContainer.qml");
-                                            pluginTabView.addTab(name,pluginComponent)
-                                            pluginTabView.currentIndex = pluginTabView.count - 1
+                                            if(globalStorage.loginPlatform == platform){
+                                                var pluginComponent = Qt.createComponent("qrc:/qml/app/WebContainer.qml");
+                                                if(pluginComponent.status === Component.Ready){
+                                                    var newTabView =  pluginTabView.addTab(name,pluginComponent)
+                                                    pluginTabView.currentIndex = pluginTabView.count - 1
+                                                    newTabView.item.url = webUrl
+                                                    newTabView.item.newViewRequested.connect(pluginTabView.openNewTab)
+                                                }
+                                            }else{
+                                                var hintComponent = Qt.createComponent("qrc:/qml/app/hintInfoView.qml");
+                                                if(hintComponent.status === Component.Ready){
+                                                    var hintTabView =  pluginTabView.addTab(name,hintComponent)
+                                                    pluginTabView.currentIndex = pluginTabView.count - 1
+                                                    hintTabView.item.text = "你没有权限访问该功能"
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -226,5 +261,19 @@ Rectangle {
                 }
             }
         }
+        function openNewTab(request){
+            console.log("打开新窗口函数被调用了")
+            console.log(request.requestedUrl)
+            var pluginComponent = Qt.createComponent("qrc:/qml/app/WebContainer.qml");
+            if(pluginComponent.status === Component.Ready){
+                var currentTabView  = pluginTabView.getTab(pluginTabView.currentIndex)
+                var newTabView =  pluginTabView.addTab(currentTabView.title,pluginComponent)
+                pluginTabView.currentIndex = pluginTabView.count - 1
+                newTabView.item.url = request.requestedUrl
+                newTabView.item.newViewRequested.connect(pluginTabView.openNewTab)
+
+            }
+        }
     }
+
 }

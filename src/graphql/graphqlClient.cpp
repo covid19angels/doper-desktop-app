@@ -11,68 +11,72 @@ GraphqlClient::GraphqlClient()
 
 }
 
-void GraphqlClient::login(void)
+
+void GraphqlClient::login(QString account, QString password)
 {
     QNetworkRequest request;
     request.setUrl(QUrl("http://47.93.9.213/gwauthcow"));
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
     nlohmann::json query;
-    query["query"] = R"(
+    query["query"] = QString(R"(
                     mutation{
-                    login(loginInput:{
-                    grantType:"password"
-                    username: "manager"
-                    password:"123456"
-                    client:"client"
-                    secret:"secret"
-                    }){
-                    platform
-                    tokenInfo{
+                      login(loginInput:{
+                        grantType:"password"
+                        username: "%1"
+                        password:"%2"
+                        client:"client"
+                        secret:"secret"
+                      }){
+                        platform
+                        tokenInfo{
                           accessToken
                            refreshToken
                           expiresIn
+                        }
+                        userErrors{
+                          message
+                        }
+                      }
                     }
-                    userErrors{
-                      message
-                    }
-                    }
-                    }
-
-                    )";
+                    )").arg(account).arg(password).toStdString() ;
 
     QString queryStr = QString::fromStdString(query.dump());
     QByteArray queryByte = queryStr.toUtf8();
     networkManager->post(request, queryByte);
 
     QObject::connect(networkManager, SIGNAL(finished(QNetworkReply*)),
-                     this, SLOT(loginSucess(QNetworkReply*)));
+                     this, SLOT(loginResponse(QNetworkReply*)));
 }
 
-void GraphqlClient::loginSucess(QNetworkReply* reply)
+void GraphqlClient::loginResponse(QNetworkReply* reply)
 {
     nlohmann::json result;
     if (reply->error()) {
-        qDebug() << reply->errorString();
+        LOG(INFO) << reply->errorString();
         return;
     }
     std::string answer = reply->readAll().toStdString();
-    //LOG(INFO) << answer;
     result =  nlohmann::json::parse(answer);
     LOG(INFO) << result["data"]["login"]["tokenInfo"].is_null();
     if(result["data"]["login"]["tokenInfo"].is_null()){
         LOG(INFO) << "login fail";
-        LOG(INFO) << "login fail" << result["data"]["login"]["userErrors"][0]["message"].get<std::string>();
+        auto errInfo =  result["data"]["login"]["userErrors"][0]["message"].get<std::string>();
+        LOG(INFO) << errInfo;
+        GlobalStorage::getInstance()->setLoginHintInfo(QStringLiteral("账号和密码不正确"));
     }else{
         LOG(INFO) << "login sucess";
         auto tokenInfo =  result["data"]["login"]["tokenInfo"];
-        GlobalStorage::getInstance()->accessToken = QString::fromStdString(tokenInfo["accessToken"].get<std::string>());
-        GlobalStorage::getInstance()->refreshToken = QString::fromStdString(tokenInfo["refreshToken"].get<std::string>());
-        GlobalStorage::getInstance()->expiresIn = tokenInfo["expiresIn"].get<int>();
-        LOG(INFO) << GlobalStorage::getInstance()->accessToken;
-        LOG(INFO) << GlobalStorage::getInstance()->refreshToken;
-        LOG(INFO) << GlobalStorage::getInstance()->expiresIn;
+        GlobalStorage::getInstance()->setAccessToken( QString::fromStdString(tokenInfo["accessToken"].get<std::string>())) ;
+        GlobalStorage::getInstance()->setRefreshToken(  QString::fromStdString(tokenInfo["refreshToken"].get<std::string>()));
+        GlobalStorage::getInstance()->setExpiresIn( tokenInfo["expiresIn"].get<int>());
+        GlobalStorage::getInstance()->setLoginStatus(true);
+        GlobalStorage::getInstance()->setLoginPlatform(QString::fromStdString(result["data"]["login"]["platform"].get<std::string>()));
+        GlobalStorage::getInstance()->setUsername("manager");
+        LOG(INFO) << GlobalStorage::getInstance()->accessToken();
+        LOG(INFO) << GlobalStorage::getInstance()->refreshToken();
+        LOG(INFO) << GlobalStorage::getInstance()->expiresIn();
+
     }
-    LOG(INFO) << "answer";
 }
 
 

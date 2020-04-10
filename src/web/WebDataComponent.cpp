@@ -13,7 +13,7 @@ WebDataComponent::~WebDataComponent() {}
 QString WebDataComponent::get_app_access_token()
 {
     qDebug() << "bdlbsc::WebDataComponent::get_app_access_token";
-    return GlobalStorage::getInstance()->accessToken ;
+    return GlobalStorage::getInstance()->accessToken() ;
     //return _app_access_token;
 }
 
@@ -30,17 +30,17 @@ QString WebDataComponent::get_data()
 
 QString WebDataComponent::get_access_token()
 {
-    return GlobalStorage::getInstance()->accessToken ;
+    return GlobalStorage::getInstance()->accessToken() ;
 }
 
 QString WebDataComponent::get_refresh_token()
 {
-    return GlobalStorage::getInstance()->refreshToken ;
+    return GlobalStorage::getInstance()->refreshToken() ;
 }
 
 int WebDataComponent::get_expiresIn()
 {
-    return GlobalStorage::getInstance()->expiresIn ;
+    return GlobalStorage::getInstance()->expiresIn() ;
 }
 
 QString WebDataComponent::get_user_id()

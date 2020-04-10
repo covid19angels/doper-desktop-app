@@ -58,5 +58,6 @@
         <file>images/main-logo.png</file>
         <file>qml/app/WebContainer.qml</file>
         <file>qml/index.html</file>
+        <file>qml/app/hintInfoView.qml</file>
     </qresource>
 </RCC>
