@@ -11,6 +11,7 @@ IF(NOT CMAKE_BUILD_TYPE)
   SET(CMAKE_BUILD_TYPE Release)
 ENDIF()
 MESSAGE("Build type: " ${CMAKE_BUILD_TYPE})
+set(RC_ICONS favicon.ico)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -20,7 +21,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt5  COMPONENTS  Sql Core Widgets Quick WebEngine WebChannel AutoUpdaterCore AutoUpdaterWidgets REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
+# 设置应用程序ico
+if (WIN32)
 
+endif (WIN32)
 add_executable(${PROJECT_NAME} "src/main.cpp"
 
     "src/plugin/Plugin.h"
@@ -43,7 +47,15 @@ add_executable(${PROJECT_NAME} "src/main.cpp"
     "src/storage/global.cpp"
     "src/web/WebDataComponent.h"
     "src/web/WebDataComponent.cpp"
-    "qml.qrc")
+    "qml.qrc"
+    "favicon.ico"
+     ${app_WINRC}
+    )
+
+
+
+
+# 设置程序运行时不弹出cmd窗口
 if(${CMAKE_CXX_COMPILER} MATCHES ".*/(g\\+\\+)(\\..*)")
     set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "-mwindows")
 elseif(${CMAKE_CXX_COMPILER} MATCHES ".*/(cl)(\\..*)")

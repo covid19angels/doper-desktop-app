@@ -13,12 +13,15 @@ public:
     GraphqlClient();
 
     Q_INVOKABLE void login(QString,QString);
-
-
+    Q_INVOKABLE void quit();
+    Q_INVOKABLE void getPluginJson();
 public  slots:
-    void loginResponse(QNetworkReply*);
+    void loginResponse();
+    void getPluginJsonResponse();
+    void error(QNetworkReply::NetworkError code);
 private:
     QNetworkAccessManager* networkManager;
+    QNetworkReply* reply;
 };
 
 #endif // GraphqlClient_H

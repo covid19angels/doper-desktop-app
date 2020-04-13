@@ -101,6 +101,7 @@ Rectangle {
         label.color: "#FFFFFF"
         onClicked: {
             console.log("我是设置页面")
+            graphqlclient.quit()
         }
     }
 

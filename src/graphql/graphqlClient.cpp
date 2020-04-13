@@ -1,9 +1,10 @@
-﻿#include "GraphqlClient.h"
-#include <QNetworkAccessManager>
+﻿#include <QNetworkAccessManager>
 #include <nlohmann/json.hpp>
-#include "src/easylog/easylogging++.h"
 #include <iostream>
 #include <string>
+#include <QDebug>
+#include "GraphqlClient.h"
+#include "src/easylog/easylogging++.h"
 #include "src/storage/Global.h"
 GraphqlClient::GraphqlClient()
 {
@@ -41,14 +42,33 @@ void GraphqlClient::login(QString account, QString password)
                     )").arg(account).arg(password).toStdString() ;
 
     QString queryStr = QString::fromStdString(query.dump());
+    qDebug() << "login str" << queryStr;
     QByteArray queryByte = queryStr.toUtf8();
-    networkManager->post(request, queryByte);
+    reply =  networkManager->post(request, queryByte);
 
-    QObject::connect(networkManager, SIGNAL(finished(QNetworkReply*)),
-                     this, SLOT(loginResponse(QNetworkReply*)));
+    QObject::connect(reply, SIGNAL(finished()),
+                     this, SLOT(loginResponse()));
+    QObject::connect(reply,SIGNAL(error(QNetworkReply::NetworkError)),this,SLOT(error(QNetworkReply::NetworkError)));
+
 }
 
-void GraphqlClient::loginResponse(QNetworkReply* reply)
+void GraphqlClient::quit()
+{
+    GlobalStorage::getInstance()->clear();
+}
+
+void GraphqlClient::getPluginJson()
+{
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://127.0.0.1:9000/pluginjson"));
+
+    reply = networkManager->get(request);
+    QObject::connect(reply, SIGNAL(finished()),
+                     this, SLOT(getPluginJsonResponse()));
+    QObject::connect(reply,SIGNAL(error(QNetworkReply::NetworkError)),this,SLOT(error(QNetworkReply::NetworkError)));
+}
+
+void GraphqlClient::loginResponse()
 {
     nlohmann::json result;
     if (reply->error()) {
@@ -77,6 +97,26 @@ void GraphqlClient::loginResponse(QNetworkReply* reply)
         LOG(INFO) << GlobalStorage::getInstance()->expiresIn();
 
     }
+    LOG(INFO) << "login response end";
+    getPluginJson();
+
+}
+
+void GraphqlClient::getPluginJsonResponse()
+{
+    if (reply->error()) {
+        LOG(INFO) << reply->errorString();
+        return;
+    }
+    QString answer = reply->readAll();
+    qDebug()<<"get plguin json  " << answer;
+    GlobalStorage::getInstance()->setPluginjson(answer);
+    GlobalStorage::getInstance()->setLoginStatus(true);
+}
+
+void GraphqlClient::error(QNetworkReply::NetworkError code)
+{
+    qDebug() <<code;
 }
 
 

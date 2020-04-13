@@ -9,81 +9,95 @@ Rectangle {
     height: parent.height
     color: "#EAEAEC"
 
-
-    ListModel {
-        id:pluginsDataModel
-        ListElement{
-            name:"组织架构"
-            attributes:[
-                ListElement {
-                    name: "管理平台"
-                    iamgeUrl: "qrc:/images/operating-structure.png"
-                    webUrl:"http://47.93.9.213/topcenter/#/OperationalArchitecture/detailsOperatorCompany"
-                    platform:"TOPCENTER"
-                },
-                ListElement {
-                    name: "区域平台"
-                    iamgeUrl: "qrc:/images/government-structure.png"
-                    webUrl:"http://47.93.9.213/areacenter/#/OperationalArchitecture/detailsCenter"
-                    platform:"AREACENTER"
-                },
-                ListElement {
-                    name: "社区平台"
-                    iamgeUrl: "qrc:/images/staff-management.png"
-                    webUrl:"http://47.93.9.213/station/#/stage/dayOperating"
-                    platform:"STATION"
-                },
-                ListElement {
-                    name: "运营平台"
-                    iamgeUrl: "qrc:/images/staff-management.png"
-                    webUrl:"http://47.93.9.213/opcenter/#/controlCenter/ShowMapBacklog"
-                    platform:"OPCENTER"
-                },
-                ListElement {
-                    name: "员工管理"
-                    iamgeUrl: "qrc:/images/staff-management.png"
-                    webUrl:"http://47.93.9.213/opcenter/#/controlCenter/ShowMapBacklog"
-                    platform:"OPCENTER"
-                }
-            ]
-        }
-        ListElement{
-            name:"用户档案"
-            attributes:[
-                ListElement {
-                    name: "用户查看"
-                    iamgeUrl: "qrc:/images/user-view.png"
-                },
-                ListElement {
-                    name: "新增用户"
-                    iamgeUrl: "qrc:/images/add-user.png"
-                }
-            ]
-        }
-        ListElement{
-            name:"运营管理"
-            attributes:[
-                ListElement {
-                    name: "决策"
-                    iamgeUrl: "qrc:/images/decision.png"
-                },
-                ListElement {
-                    name: "资讯推送"
-                    iamgeUrl: "qrc:/images/Information-push.png"
-                },
-                ListElement {
-                    name: "广告位"
-                    iamgeUrl: "qrc:/images/advertising-board.png"
-                },
-                ListElement {
-                    name: "社区检查"
-                    iamgeUrl: "qrc:/images/community-check.png"
-                }
-            ]
-        }
+    property var pluginsDataModel: JSON.parse(globalStorage.pluginjson)
 
 
+    Connections{
+        target: globalStorage
+        onPluginjsonChanged:{
+            pluginsDataModel = JSON.parse(globalStorage.pluginjson)
+            console.log("plugindata is receive")
+            console.log(pluginsDataModel[0].name)
+        }
     }
+
+//    ListModel {
+//        id:pluginsDataModel
+//        ListElement{
+//            name:"组织架构"
+//            attributes:[
+//                ListElement {
+//                    //manager 123456
+//                    name: "管理平台"
+//                    iamgeUrl: "qrc:/images/operating-structure.png"
+//                    webUrl:"http://47.93.9.213/topcenter/#/OperationalArchitecture/detailsOperatorCompany"
+//                    platform:"TOPCENTER"
+//                },
+//                ListElement {
+//                    //fengtaiquyu 111111
+//                    name: "区域平台"
+//                    iamgeUrl: "qrc:/images/government-structure.png"
+//                    webUrl:"http://47.93.9.213/areacenter/#/OperationalArchitecture/detailsCenter"
+//                    platform:"AREACENTER"
+//                },
+//                ListElement {
+//                    //fengtaiyizhan 111111
+//                    name: "社区平台"
+//                    iamgeUrl: "qrc:/images/staff-management.png"
+//                    webUrl:"http://47.93.9.213/station/#/stage/dayOperating"
+//                    platform:"STATION"
+//                },
+//                ListElement {
+//                    //fengtaiyunying 111111
+//                    name: "运营平台"
+//                    iamgeUrl: "qrc:/images/staff-management.png"
+//                    webUrl:"http://47.93.9.213/opcenter/#/controlCenter/ShowMapBacklog"
+//                    platform:"OPCENTER"
+//                },
+//                ListElement {
+//                    //fengtaizhengfu 111111
+//                    name: "政府平台"
+//                    iamgeUrl: "qrc:/images/staff-management.png"
+//                    webUrl:"http://47.93.30.243/#/buy/index"
+//                    platform:"GOV"
+//                }
+//            ]
+//        }
+//        ListElement{
+//            name:"用户档案"
+//            attributes:[
+//                ListElement {
+//                    name: "用户查看"
+//                    iamgeUrl: "qrc:/images/user-view.png"
+//                },
+//                ListElement {
+//                    name: "新增用户"
+//                    iamgeUrl: "qrc:/images/add-user.png"
+//                }
+//            ]
+//        }
+//        ListElement{
+//            name:"运营管理"
+//            attributes:[
+//                ListElement {
+//                    name: "决策"
+//                    iamgeUrl: "qrc:/images/decision.png"
+//                },
+//                ListElement {
+//                    name: "资讯推送"
+//                    iamgeUrl: "qrc:/images/Information-push.png"
+//                },
+//                ListElement {
+//                    name: "广告位"
+//                    iamgeUrl: "qrc:/images/advertising-board.png"
+//                },
+//                ListElement {
+//                    name: "社区检查"
+//                    iamgeUrl: "qrc:/images/community-check.png"
+//                }
+//            ]
+//        }
+//    }
 
 
     TabView {
@@ -136,7 +150,7 @@ Rectangle {
                         id: close
                         text: qsTr("×")
                         anchors.right:  parent.right
-                        anchors.rightMargin: 10
+                        anchors.rightMargin: 3
                         anchors.verticalCenter: parent.verticalCenter
                         color: "#5D6169"
                         MouseArea {
@@ -148,8 +162,6 @@ Rectangle {
                         }
                     }
                 }
-
-
             }
             frame: Rectangle { color: "#F8F8FA" }
         }
@@ -202,7 +214,7 @@ Rectangle {
                             height: 60+kindContent.height
                             Text {
                                 id:kindName
-                                text: name
+                                text: modelData.name
                                 font.bold: true
                                 font.pixelSize: 20
                             }
@@ -218,36 +230,36 @@ Rectangle {
                                 }
 
                                 Repeater {
-                                    model: attributes
+                                    model: modelData.attributes
                                     MouseArea {
                                         width: 100; height: 40
 
                                         Image {
                                             id:iconImage
                                             sourceSize: Qt.size(40,40)
-                                            source: iamgeUrl
+                                            source: modelData.iamgeUrl
                                         }
                                         Text {
                                             anchors.left: iconImage.right
                                             anchors.leftMargin: 8
-                                            text: name
+                                            text: modelData.name
                                             anchors.verticalCenter: iconImage.verticalCenter
                                             font.bold: true
                                             font.pixelSize: 14
                                         }
                                         onClicked: {
-                                            if(globalStorage.loginPlatform == platform){
+                                            if(globalStorage.loginPlatform === modelData.platform){
                                                 var pluginComponent = Qt.createComponent("qrc:/qml/app/WebContainer.qml");
                                                 if(pluginComponent.status === Component.Ready){
-                                                    var newTabView =  pluginTabView.addTab(name,pluginComponent)
+                                                    var newTabView =  pluginTabView.addTab(modelData.name,pluginComponent)
                                                     pluginTabView.currentIndex = pluginTabView.count - 1
-                                                    newTabView.item.url = webUrl
+                                                    newTabView.item.url = modelData.webUrl
                                                     newTabView.item.newViewRequested.connect(pluginTabView.openNewTab)
                                                 }
                                             }else{
                                                 var hintComponent = Qt.createComponent("qrc:/qml/app/hintInfoView.qml");
                                                 if(hintComponent.status === Component.Ready){
-                                                    var hintTabView =  pluginTabView.addTab(name,hintComponent)
+                                                    var hintTabView =  pluginTabView.addTab(modelData.name,hintComponent)
                                                     pluginTabView.currentIndex = pluginTabView.count - 1
                                                     hintTabView.item.text = "你没有权限访问该功能"
                                                 }
@@ -271,9 +283,7 @@ Rectangle {
                 pluginTabView.currentIndex = pluginTabView.count - 1
                 newTabView.item.url = request.requestedUrl
                 newTabView.item.newViewRequested.connect(pluginTabView.openNewTab)
-
             }
         }
     }
-
 }

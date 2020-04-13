@@ -24,7 +24,6 @@ Window {
 
 
     ZHeader{
-
         window: loginItemWindow
         id:loginHeaderRect
         width: parent.width
@@ -42,7 +41,6 @@ Window {
                     width: 30
                     height: 30
                     icon.source: "qrc:/images/close.png"
-
                     onClicked: {
                         console.log("close")
                         loginHeaderRect.window.visible = false
@@ -73,14 +71,14 @@ Window {
             id:loginUsername
             icon.source: "qrc:/images/denglu.png"
             content.placeholderText: "请输入账号"
-            content.text: "manager"
+            content.text: "fengtaizhengfu"
         }
         ZTextInput{
             id:loginPassword
             icon.source: "qrc:/images/mima.png"
             content.placeholderText: "请输入密码"
             content.echoMode: TextInput.Password
-            content.text: "123456"
+            content.text: "111111"
         }
 
         Row{

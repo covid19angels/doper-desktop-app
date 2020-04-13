@@ -73,6 +73,7 @@ Window {
                         font.pixelSize: 14
                     }
                     ZSimpleButton{
+                        id:mainItemXialaButton
                         width: 10
                         height: 10
                         anchors.left: userName.right
